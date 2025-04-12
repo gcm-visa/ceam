@@ -154,7 +154,7 @@
         });
     };
 
-    function displayResults(data) {
+  function displayResults(data) {
   const resultsDiv = document.getElementById('results');
   const resultsContainer = document.getElementById('resultsContainer');
 
@@ -166,17 +166,40 @@
   }
 
   if (data.results && data.results.length > 0) {
+    let table = `
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
+        <thead>
+          <tr>
+            <th style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff;">Field</th>
+            <th style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff;">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
     data.results.forEach(row => {
-      resultsDiv.innerHTML += `
-        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f9f9f9;">
-          <p><strong>ID:</strong> ${row[0]}</p>
-          <p><strong>Surname:</strong> ${row[1]}</p>
-          <p><strong>First Name:</strong> ${row[2]}</p>
-          <p><strong>Status:</strong> ${row[3]}</p>
-        </div>
+      table += `
+        <tr>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">ID</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9;">${row[0]}</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Surname</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${row[1]}</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">First Name</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${row[2]}</td>
+        </tr>
+        <tr>
+          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Status</td>
+          <td style="padding: 12px; border: 1px solid #ddd;">${row[3]}</td>
+        </tr>
       `;
     });
 
+    table += '</tbody></table>';
+    resultsDiv.innerHTML += table;
     resultsContainer.style.display = 'block';
   } else {
     resultsDiv.innerHTML += '<p>No matching results found.</p>';
