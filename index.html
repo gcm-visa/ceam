@@ -166,39 +166,30 @@
   }
 
   if (data.results && data.results.length > 0) {
-    let table = `
-      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
-        <thead>
-          <tr>
-            <th style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff;">Field</th>
-            <th style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff;">Value</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
+    let table = '<table style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">';
+    
     data.results.forEach(row => {
       table += `
         <tr>
-          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9; font-weight: bold;">ID</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff; font-weight: bold;">ID</td>
           <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9;">${row[0]}</td>
         </tr>
         <tr>
-          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Surname</td>
-          <td style="padding: 12px; border: 1px solid #ddd;">${row[1]}</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff; font-weight: bold;">Surname</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9;">${row[1]}</td>
         </tr>
         <tr>
-          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">First Name</td>
-          <td style="padding: 12px; border: 1px solid #ddd;">${row[2]}</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff; font-weight: bold;">First Name</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9;">${row[2]}</td>
         </tr>
         <tr>
-          <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">Status</td>
-          <td style="padding: 12px; border: 1px solid #ddd;">${row[3]}</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #2ecc71; color: #fff; font-weight: bold;">Status</td>
+          <td style="padding: 12px; border: 1px solid #ddd; background-color: #f9f9f9;">${row[3]}</td>
         </tr>
       `;
     });
 
-    table += '</tbody></table>';
+    table += '</table>';
     resultsDiv.innerHTML += table;
     resultsContainer.style.display = 'block';
   } else {
@@ -206,6 +197,7 @@
     resultsContainer.style.display = 'block';
   }
 }
+
 
   </script>
 
