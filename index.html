@@ -155,29 +155,35 @@
     };
 
     function displayResults(data) {
-      const resultsDiv = document.getElementById('results');
-      const resultsContainer = document.getElementById('resultsContainer');
+  const resultsDiv = document.getElementById('results');
+  const resultsContainer = document.getElementById('resultsContainer');
 
-      resultsDiv.innerHTML = '';
+  resultsDiv.innerHTML = '';
 
-      if (data.heading) {
-        const headingElement = `<h3 style="text-align:center; color:#2c3e50;">${data.heading}</h3>`;
-        resultsDiv.innerHTML += headingElement;
-      }
+  if (data.heading) {
+    const headingElement = `<h3 style="text-align:center; color:#2c3e50;">${data.heading}</h3>`;
+    resultsDiv.innerHTML += headingElement;
+  }
 
-      if (data.results && data.results.length > 0) {
-        let table = '<table><tr><th>ID</th><th>Surname</th><th>First Name</th><th>Status</th></tr>';
-        data.results.forEach(row => {
-          table += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
-        });
-        table += '</table>';
-        resultsDiv.innerHTML += table;
-        resultsContainer.style.display = 'block';
-      } else {
-        resultsDiv.innerHTML += '<p>No matching results found.</p>';
-        resultsContainer.style.display = 'block';
-      }
-    }
+  if (data.results && data.results.length > 0) {
+    data.results.forEach(row => {
+      resultsDiv.innerHTML += `
+        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f9f9f9;">
+          <p><strong>ID:</strong> ${row[0]}</p>
+          <p><strong>Surname:</strong> ${row[1]}</p>
+          <p><strong>First Name:</strong> ${row[2]}</p>
+          <p><strong>Status:</strong> ${row[3]}</p>
+        </div>
+      `;
+    });
+
+    resultsContainer.style.display = 'block';
+  } else {
+    resultsDiv.innerHTML += '<p>No matching results found.</p>';
+    resultsContainer.style.display = 'block';
+  }
+}
+
   </script>
 
 </body>
