@@ -34,7 +34,7 @@
       padding: 20px;
       width: 100%;
       max-width: 600px;
-      display: none; /* Hide results container by default */
+      display: none;
     }
 
     label {
@@ -59,7 +59,7 @@
       padding: 14px;
       border: none;
       border-radius: 4px;
-      background-color: #2ecc71; /* Green color for the button */
+      background-color: #2ecc71;
       color: #fff;
       font-size: 16px;
       cursor: pointer;
@@ -67,7 +67,7 @@
     }
 
     input[type="submit"]:hover {
-      background-color: #27ae60; /* Darker green on hover */
+      background-color: #27ae60;
     }
 
     .results table {
@@ -83,7 +83,7 @@
     }
 
     .results th {
-      background-color: #2ecc71; /* Green color for the table headers */
+      background-color: #2ecc71;
       color: #fff;
     }
 
@@ -104,21 +104,16 @@
     }
 
     marquee {
-      color: #e74c3c; /* Red text for emphasis */
+      color: #e74c3c;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-  <!-- Search Container -->
   <div class="container">
-    <!-- Logo Image -->
     <img src="https://www.dropbox.com/scl/fi/plnevepzhsf9etdoxnlzs/logo-for-MARS.png?rlkey=03l9s706cr83aml02v64kgv38&dl=1" 
          style="max-width: 100%; height: auto; margin-bottom: 20px;">
-
-
-    <!-- Title -->
     <h2>CEAM Status Search</h2>
     
     <form id="searchForm">
@@ -129,59 +124,61 @@
     <p id="loading">Loading, please wait...</p>
   </div>
 
-  <!-- Results Container (Initially hidden) -->
   <div id="resultsContainer" class="results-container">
-    <div id="results" class="results">
-      <!-- Results will appear here -->
-    </div>
+    <div id="results" class="results"></div>
   </div>
 
   <script>
-document.getElementById('searchForm').onsubmit = function(event) {
-  event.preventDefault(); // Prevent form submission
+    document.getElementById('searchForm').onsubmit = function(event) {
+      event.preventDefault();
+      const idNumberInput = document.getElementById('idNumber').value;
 
-  const idNumberInput = document.getElementById('idNumber').value;
+      const loadingText = document.getElementById('loading');
+      loadingText.style.display = 'block';
 
-  // Show the loading text
-  const loadingText = document.getElementById('loading');
-  loadingText.style.display = 'block';
+     const scriptUrl = 'https://script.google.com/macros/s/AKfycbxnzRCfIP8ClJeSv-7BT2Ko1o-eB-t_JnWGKr5Y_i6W_v63NHP2SRYNGgTzUxeCQHtqlw/exec';
 
-  // Call the Apps Script function and handle the response
-  google.script.run.withSuccessHandler(function(data) {
-    displayResults(data);
-    loadingText.style.display = 'none'; // Hide the loading text when done
-  }).searchDataWithHeadingByID(idNumberInput);
-};
 
-function displayResults(data) {
-  const resultsDiv = document.getElementById('results');
-  const resultsContainer = document.getElementById('resultsContainer');
+      const params = new URLSearchParams();
+      params.append('idInput', idNumberInput);
 
-  resultsDiv.innerHTML = ''; // Clear any previous results
+      fetch(scriptUrl + '?' + params.toString())
+        .then(response => response.json())
+        .then(data => {
+          displayResults(data);
+          loadingText.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          loadingText.style.display = 'none';
+        });
+    };
 
-  if (data.heading) {
-    // Display the heading
-    const headingElement = `<h3 style="text-align:center; color:#2c3e50;">${data.heading}</h3>`;
-    resultsDiv.innerHTML += headingElement;
-  }
+    function displayResults(data) {
+      const resultsDiv = document.getElementById('results');
+      const resultsContainer = document.getElementById('resultsContainer');
 
-  if (data.results.length > 0) {
-    // Generate the results table
-    let table = '<table><tr><th>ID</th><th>Surname</th><th>First Name</th><th>Status</th></tr>';
-    data.results.forEach(row => {
-      table += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
-    });
-    table += '</table>';
-    resultsDiv.innerHTML += table;
+      resultsDiv.innerHTML = '';
 
-    // Show the results container
-    resultsContainer.style.display = 'block';
-  } else {
-    resultsDiv.innerHTML += '<p>No matching results found.</p>';
-    resultsContainer.style.display = 'block';
-  }
-}
-</script>
+      if (data.heading) {
+        const headingElement = `<h3 style="text-align:center; color:#2c3e50;">${data.heading}</h3>`;
+        resultsDiv.innerHTML += headingElement;
+      }
+
+      if (data.results && data.results.length > 0) {
+        let table = '<table><tr><th>ID</th><th>Surname</th><th>First Name</th><th>Status</th></tr>';
+        data.results.forEach(row => {
+          table += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
+        });
+        table += '</table>';
+        resultsDiv.innerHTML += table;
+        resultsContainer.style.display = 'block';
+      } else {
+        resultsDiv.innerHTML += '<p>No matching results found.</p>';
+        resultsContainer.style.display = 'block';
+      }
+    }
+  </script>
 
 </body>
 </html>
